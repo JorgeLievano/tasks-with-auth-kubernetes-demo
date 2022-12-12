@@ -43,7 +43,7 @@ Demo application to manage tasks with users registration and a mock auth.
 1. Apply the users api manifest files
     
     ```console
-    kubectl apply -f kubernetes/users-deployment.yaml -f kubernetes/users-service.yaml
+    kubectl apply -f kubernetes/auth-deployment.yaml -f kubernetes/auth-service.yaml -f kubernetes/tasks-deployment.yaml -f kubernetes/tasks-service.yaml -f kubernetes/users-deployment.yaml -f kubernetes/users-service.yaml
     ```
 
 2. Open a new terminal and expose the users service
@@ -52,9 +52,21 @@ Demo application to manage tasks with users registration and a mock auth.
     minikube service users-service
     ```
 
-    You will get an output like the following where you can get the `URL`of teh service
+    You will get an output like the following where you can get the `URL` of the service (`USERS_URL`)
 
     ![expose-users](assets/expose-users.png)
+
+    :warning: By default this command attempts to open the URL on your web browser, but you can close it.
+
+3. Open a new terminal and expose the tasks service
+
+    ```console
+    minikube service tasks-service
+    ```
+
+    You will get an output like the following where you can get the `URL` of the service (`TASKS_URL`)
+
+    ![expose-users](assets/expose-tasks.png)
 
     :warning: By default this command attempts to open the URL on your web browser, but you can close it.
 
@@ -64,7 +76,7 @@ Once you expose the users-service you should get the `URL` of the service and th
 
 - **Signup**
 
-    - Endpoint: `${URL}/signup`
+    - Endpoint: `${USERS_URL}/signup`
 
     - Method type: `POST`
 
@@ -91,7 +103,7 @@ Once you expose the users-service you should get the `URL` of the service and th
 
 - **Login**
 
-    - Endpoint: `${URL}/login`
+    - Endpoint: `${USERS_URL}/login`
 
     - Method type: `POST`
 

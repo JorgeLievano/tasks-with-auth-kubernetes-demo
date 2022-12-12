@@ -64,27 +64,56 @@ Once you expose the users-service you should get the `URL` of the service and th
 
 - **Signup**
 
-    Endpoint: `${URL}/signup`
+    - Endpoint: `${URL}/signup`
 
-    Method type: `POST`
+    - Method type: `POST`
 
-    Body Format: `raw` | `JSON`
+    - Body Format: `raw` | `JSON`
 
-    Body example:
+    - Body example:
 
-    ```JSON
-    {
-        "email": "test@test.com",
-        "password": "test01"
-    }
-    ```
-    ![signup-request](assets/signup-request.png)
+        ```JSON
+        {
+            "email": "test@test.com",
+            "password": "test01"
+        }
+        ```
+        ![signup-request](assets/signup-request.png)
 
-    You will receive the following reponse
+    - Response:
 
-    ```JSON
-    {
-        "message": "User created!"
-    }
-    ```
-    ![signup-response](assets/signup-response.png)
+        ```JSON
+        {
+            "message": "User created!"
+        }
+        ```
+        ![signup-response](assets/signup-response.png)
+
+- **Login**
+
+    - Endpoint: `${URL}/login`
+
+    - Method type: `POST`
+
+    - Body Format: `raw` | `JSON`
+
+    - Body example:
+
+        ```JSON
+        {
+            "email": "test@test.com",
+            "password": "test01"
+        }
+        ```
+        ![login-request](assets/login-request.png)
+
+    - Response:
+
+        The API will send you the mocked token
+
+        ```JSON
+        {
+            "token": "abc"
+        }
+        ```
+        ![login-response](assets/login-response.png)

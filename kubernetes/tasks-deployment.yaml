@@ -21,3 +21,10 @@ spec:
               value: "auth-service.default"
             - name: TASKS_FOLDER
               value: tasks
+          volumeMounts:
+            - mountPath: /app/tasks
+              name: tasks-volume
+      volumes:
+        - name: tasks-volume
+          persistentVolumeClaim:
+            claimName: tasks-pvc

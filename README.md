@@ -43,7 +43,7 @@ Demo application to manage tasks with users registration and a mock auth.
 1. Apply the users api manifest files
     
     ```console
-    kubectl apply -f kubernetes/auth-deployment.yaml -f kubernetes/auth-service.yaml -f kubernetes/tasks-deployment.yaml -f kubernetes/tasks-service.yaml -f kubernetes/users-deployment.yaml -f kubernetes/users-service.yaml
+    kubectl apply -f kubernetes/tasks-pv.yaml -f kubernetes/tasks-pvc.yaml -f kubernetes/auth-deployment.yaml -f kubernetes/auth-service.yaml -f kubernetes/tasks-deployment.yaml -f kubernetes/tasks-service.yaml -f kubernetes/users-deployment.yaml -f kubernetes/users-service.yaml
     ```
 
 2. Open a new terminal and expose the users service
@@ -74,13 +74,21 @@ Demo application to manage tasks with users registration and a mock auth.
 
 Once you expose the users-service you should get the `URL` of the service and the following endpoints will be availables:
 
-- **Signup**
+- ### Signup
 
-    - Endpoint: `${USERS_URL}/signup`
+    Create a new user
 
-    - Method type: `POST`
+    - Endpoint: 
+        ```http
+        POST ${USERS_URL}/signup/
+        ```
 
-    - Body Format: `raw` | `JSON`
+    - Request Params:
+
+        | Parameter | Type     | Description               |
+        | --------- | -------- | ------------------------- |
+        | `email`   | `string` | **Required** User email   |
+        | `password`| `string` | **Required** User password|
 
     - Body example:
 
@@ -101,13 +109,20 @@ Once you expose the users-service you should get the `URL` of the service and th
         ```
         ![signup-response](assets/signup-response.png)
 
-- **Login**
+- ### Login
+    Login using user credentials
 
-    - Endpoint: `${USERS_URL}/login`
+    - Endpoint: 
+        ```http
+        POST ${USERS_URL}/login/
+        ```
 
-    - Method type: `POST`
+    - Request Params:
 
-    - Body Format: `raw` | `JSON`
+        | Parameter | Type     | Description               |
+        | --------- | -------- | ------------------------- |
+        | `email`   | `string` | **Required** User email   |
+        | `password`| `string` | **Required** User password|
 
     - Body example:
 
@@ -129,3 +144,52 @@ Once you expose the users-service you should get the `URL` of the service and th
         }
         ```
         ![login-response](assets/login-response.png)
+
+- ### Add Task
+
+    Create a task
+
+    - Endpoint: 
+        ```http
+        POST ${TASKS_URL}/tasks/
+        ```
+
+    - Headers:
+
+        | Key               | Value                |
+        | ----------------- | -------------------- |
+        | **Authorization** | Bearer ${USER_TOKEN} |
+
+        ![tasks-create-request-header.png](assets/tasks-create-request-header.png)
+
+    - Request Params:
+
+        | Parameter | Type     | Description                   |
+        | --------- | -------- | -------------------------     |
+        | `title`   | `string` | **Required** task title       |
+        | `text`    | `string` | **Required** task description |
+
+    - Body example:
+
+        ```JSON
+        {
+            "title": "Test task", 
+            "text": "Do this first"
+        }
+        ```
+        ![tasks-create-request-body.png](assets/tasks-create-request-body.png)
+
+    - Response:
+
+        ```JSON
+        {
+            "message": "Task stored.",
+            "createdTask": {
+                "title": "Test task",
+                "text": "Do this first"
+            }    
+        }
+        ```
+        ![tasks-create-response.png](assets/tasks-create-response.png)
+
+- ### List Task

@@ -40,7 +40,7 @@ Demo application to manage tasks with users registration and a mock auth.
 
 ## Run it
 
-1. Apply the users api manifest files
+1. Apply the manifest files
     
     ```console
     kubectl apply -f kubernetes/tasks-pv.yaml -f kubernetes/tasks-pvc.yaml -f kubernetes/auth-deployment.yaml -f kubernetes/auth-service.yaml -f kubernetes/tasks-deployment.yaml -f kubernetes/tasks-service.yaml -f kubernetes/users-deployment.yaml -f kubernetes/users-service.yaml
@@ -160,7 +160,7 @@ Once you expose the users-service you should get the `URL` of the service and th
         | ----------------- | -------------------- |
         | **Authorization** | Bearer ${USER_TOKEN} |
 
-        ![tasks-create-request-header.png](assets/tasks-create-request-header.png)
+        ![tasks-create-request-header](assets/tasks-create-request-header.png)
 
     - Request Params:
 
@@ -177,7 +177,7 @@ Once you expose the users-service you should get the `URL` of the service and th
             "text": "Do this first"
         }
         ```
-        ![tasks-create-request-body.png](assets/tasks-create-request-body.png)
+        ![tasks-create-request-body](assets/tasks-create-request-body.png)
 
     - Response:
 
@@ -190,6 +190,61 @@ Once you expose the users-service you should get the `URL` of the service and th
             }    
         }
         ```
-        ![tasks-create-response.png](assets/tasks-create-response.png)
+        ![tasks-create-response](assets/tasks-create-response.png)
 
-- ### List Task
+- ### List Tasks
+
+    List all the tasks
+
+    - Endpoint: 
+        ```http
+        GET ${TASKS_URL}/tasks/
+        ```
+
+    - Headers:
+
+        | Key               | Value                |
+        | ----------------- | -------------------- |
+        | **Authorization** | Bearer ${USER_TOKEN} |
+
+        ![tasks-get-request-header](assets/tasks-get-request-header.png)
+
+    - Response:
+
+        The application will return the list of the created tasks
+
+        ```JSON
+        {
+            "message": "Tasks loaded.",
+            "tasks": [
+                {
+                    "title": "Test task",
+                    "text": "Do this first"
+                    }
+            ]
+        }
+        ```
+        ![tasks-get-response-ok](assets/tasks-get-response-ok.png)
+
+        :warning: If no task has been created, you will receive an error
+
+        ```JSON
+        {
+            "message": "Loading the tasks failed."
+        }
+        ```
+        ![tasks-get-response-failed](assets/tasks-get-response-failed.png)
+
+## :stop_sign: Stop instructions
+
+You can stop the cluster without losing the deployment
+```console
+minikube stop
+```
+Or you can delete the deployment, then stop the cluster
+```console
+kubectl delete -f kubernetes/tasks-pv.yaml -f kubernetes/tasks-pvc.yaml -f kubernetes/auth-deployment.yaml -f kubernetes/auth-service.yaml -f kubernetes/tasks-deployment.yaml -f kubernetes/tasks-service.yaml -f kubernetes/users-deployment.yaml -f kubernetes/users-service.yaml
+```
+```console
+minikube stop
+```
